@@ -1,0 +1,47 @@
+:root {
+    --cream: #F8F5F0;
+    --dark: #1A1818;
+    --pink: #E8C4C4;
+    --green: #D1D9D2;
+    --purple: #4A2545;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--dark);
+    background: var(--cream);
+}
+
+h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+}
+
+.logo {
+    font-family: 'Parisienne', cursive;
+}
+
+/* Hamburger menu animation */
+.hamburger span {
+    transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Project hover effects */
+.project-item {
+    transition: transform 0.3s ease;
+}
+.project-item:hover {
+    transform: scale(1.02);
+}
+.project-item:hover .play-btn {
+    opacity: 1;
+}
