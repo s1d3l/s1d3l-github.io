@@ -45,3 +45,54 @@ h1, h2, h3 {
 .project-item:hover .play-btn {
     opacity: 1;
 }
+/* Video Background */
+.video-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Hero Section */
+.hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Hamburger Menu */
+.hamburger {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 100;
+  cursor: pointer;
+}
+.hamburger span {
+  display: block;
+  width: 30px;
+  height: 2px;
+  background: var(--dark);
+  margin: 6px 0;
+}
+
+/* Menu Overlay */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--cream);
+  z-index: 99;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+.menu-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
