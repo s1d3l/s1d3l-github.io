@@ -3,6 +3,8 @@ import { Canvas } from '@react-three/fiber';
 import { motion } from 'framer-motion';
 import { LoadingScreen } from './components/LoadingScreen';
 import { Scene } from './components/Scene';
+import { BackgroundEffect } from './components/BackgroundEffect';
+import { CustomCursor } from './components/CustomCursor';
 import { Code, User, Briefcase, Mail } from 'lucide-react';
 
 function App() {
@@ -47,13 +49,14 @@ function App() {
 
   return (
     <>
+      <CustomCursor />
       {isLoading && <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />}
       
       <div className="fixed inset-0">
         <Canvas camera={{ position: [0, 0, 5] }}>
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} />
+          <color attach="background" args={['#000000']} />
           <Suspense fallback={null}>
+            <BackgroundEffect />
             <Scene />
           </Suspense>
         </Canvas>
