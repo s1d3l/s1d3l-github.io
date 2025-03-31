@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nikita Boghiu - Creative Portfolio</title>
+    <title>Nikita Boghiu - Portfolio</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         
@@ -11,6 +11,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            cursor: none !important;
         }
         
         body {
@@ -21,7 +22,43 @@
             scroll-behavior: smooth;
         }
         
-        /* Header Styles */
+        /* --- Cursor Styles --- */
+        .cursor {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #000;
+            mix-blend-mode: difference;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+        }
+        
+        .cursor-follower {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid #000;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: 
+                transform 0.4s cubic-bezier(0.15, 0.85, 0.35, 1),
+                width 0.3s ease,
+                height 0.3s ease;
+        }
+        
+        .cursor-follower.active {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(2px);
+        }
+        
+        /* --- Header Styles --- */
         header {
             position: fixed;
             top: 0;
@@ -47,6 +84,8 @@
             color: #333;
             text-decoration: none;
             transition: opacity 0.3s ease;
+            position: relative;
+            z-index: 10;
         }
         
         .name:hover {
@@ -62,10 +101,22 @@
             position: relative;
             overflow: hidden;
             padding: 5px 0;
+            display: inline-block;
+            z-index: 10;
         }
         
         .contact-link span {
-            display: inline-block;
+            display: block;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .contact-link::after {
+            content: 'GET IN TOUCH';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            transform: translateY(100%);
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
@@ -73,21 +124,11 @@
             transform: translateY(-100%);
         }
         
-        .contact-link::after {
-            content: 'GET IN TOUCH';
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            text-align: right;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
         .contact-link:hover::after {
-            transform: translateY(-100%);
+            transform: translateY(0);
         }
         
-        /* Hero Section */
+        /* --- Hero Section with Background Shapes --- */
         .hero {
             height: 100vh;
             display: flex;
@@ -101,6 +142,8 @@
             text-align: center;
             max-width: 800px;
             padding: 0 20px;
+            position: relative;
+            z-index: 3;
         }
         
         .hero-title {
@@ -122,7 +165,49 @@
             animation: fadeInUp 1s ease forwards 0.6s;
         }
         
-        /* Portfolio Section */
+        /* Background Shapes with Distortion */
+        .background-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            filter: url(#displacementFilter);
+        }
+        
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.8;
+        }
+        
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            background: #ff9a9e;
+            top: -100px;
+            right: -100px;
+        }
+        
+        .shape-2 {
+            width: 600px;
+            height: 600px;
+            background: #fad0c4;
+            bottom: -200px;
+            right: 100px;
+        }
+        
+        .shape-3 {
+            width: 300px;
+            height: 300px;
+            background: #a18cd1;
+            top: 50%;
+            left: 20%;
+        }
+        
+        /* --- Portfolio Section --- */
         .portfolio {
             min-height: 100vh;
             background-color: #fff;
@@ -130,6 +215,8 @@
             transform: translateY(100vh);
             opacity: 0;
             transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
+            position: relative;
+            z-index: 2;
         }
         
         .portfolio.active {
@@ -193,7 +280,7 @@
             margin-bottom: 15px;
         }
         
-        /* Animations */
+        /* --- Animations --- */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -205,8 +292,21 @@
             }
         }
         
-        /* Responsive */
+        /* --- SVG Filter for Distortion --- */
+        svg {
+            position: absolute;
+        }
+        
+        /* --- Mobile Responsiveness --- */
         @media (max-width: 768px) {
+            * {
+                cursor: auto !important;
+            }
+            
+            .cursor, .cursor-follower {
+                display: none;
+            }
+            
             header {
                 padding: 20px;
             }
@@ -218,22 +318,47 @@
             .hero-title {
                 font-size: 40px;
             }
+            
+            .background-shapes {
+                filter: none;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+    
+    <!-- SVG Filter for Background Distortion -->
+    <svg width="0" height="0" style="position:absolute;">
+        <filter id="displacementFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.01" numOctaves="1" result="warp"></feTurbulence>
+            <feDisplacementMap xChannelSelector="R" yChannelSelector="G" scale="30" in="SourceGraphic" in2="warp"></feDisplacementMap>
+        </filter>
+    </svg>
+    
+    <!-- Header -->
     <header id="header">
         <a href="#" class="name">NIKITA BOGHIU</a>
         <a href="#" class="contact-link"><span>LETS CREATE</span></a>
     </header>
     
+    <!-- Hero Section with Animated Background -->
     <section class="hero">
+        <div class="background-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+        
         <div class="hero-content">
             <h1 class="hero-title">Digital Experiences That Captivate</h1>
             <p class="hero-subtitle">Blending design and technology to create memorable interactions</p>
         </div>
     </section>
     
+    <!-- Portfolio Section -->
     <section class="portfolio" id="portfolio">
         <div class="container">
             <h2 class="section-title">Selected Works</h2>
@@ -266,7 +391,34 @@
     </section>
     
     <script>
-        // Header scroll effect
+        // Custom Cursor Logic
+        const cursor = document.querySelector('.cursor');
+        const cursorFollower = document.querySelector('.cursor-follower');
+        const hoverables = document.querySelectorAll('a, button, .project-card, .contact-link');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            // Delayed follower with easing
+            gsap.to(cursorFollower, {
+                x: e.clientX,
+                y: e.clientY,
+                duration: 0.6,
+                ease: "power2.out"
+            });
+        });
+        
+        hoverables.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorFollower.classList.add('active');
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorFollower.classList.remove('active');
+            });
+        });
+        
+        // Header Scroll Effect
         window.addEventListener('scroll', function() {
             const header = document.getElementById('header');
             if (window.scrollY > 50) {
@@ -275,7 +427,7 @@
                 header.classList.remove('header-bg');
             }
             
-            // Portfolio section reveal
+            // Portfolio Section Reveal
             const portfolio = document.getElementById('portfolio');
             const portfolioPosition = portfolio.getBoundingClientRect().top;
             const screenPosition = window.innerHeight / 1.2;
@@ -285,23 +437,25 @@
             }
         });
         
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
+        // Dynamic SVG Filter Adjustment
+        const displacementFilter = document.querySelector('#displacementFilter feDisplacementMap');
+        
+        document.addEventListener('mousemove', (e) => {
+            const xRatio = e.clientX / window.innerWidth;
+            const yRatio = e.clientY / window.innerHeight;
+            
+            // Adjust filter based on mouse position
+            displacementFilter.setAttribute('scale', 10 + 20 * xRatio);
+            
+            // Update turbulence for organic movement
+            document.querySelector('#displacementFilter feTurbulence').setAttribute(
+                'baseFrequency', 
+                `0.01 ${0.01 + yRatio * 0.03}`
+            );
         });
     </script>
+    
+    <!-- GSAP for Smooth Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
 </body>
 </html>
