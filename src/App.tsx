@@ -1,11 +1,13 @@
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { motion } from 'framer-motion';
 import { LoadingScreen } from './components/LoadingScreen';
-import { Scene } from './components/Scene';
-import { BackgroundEffect } from './components/BackgroundEffect';
 import { CustomCursor } from './components/CustomCursor';
 import { Code, User, Briefcase, Mail } from 'lucide-react';
+
+// Lazy load components that aren't immediately needed
+const Scene = lazy(() => import('./components/Scene').then(mod => ({ default: mod.Scene })));
+const BackgroundEffect = lazy(() => import('./components/BackgroundEffect').then(mod => ({ default: mod.BackgroundEffect })));
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
